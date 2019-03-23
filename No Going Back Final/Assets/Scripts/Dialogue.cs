@@ -18,26 +18,29 @@ public class Dialogue : MonoBehaviour
     {
         tutorial = FindObjectOfType<Tutorial>();
         StartCoroutine("IntroDialogue");
-        panelFadeIn = true;
+        PanelFadeIn();
         Invoke("TextFadeIn", 1);
     }
 
     void Update()
     {
+        //Mathf.Clamp(dialoguePanel.GetComponent<Image>().color.a, 0, 1);
+        //print(textFadeOut);
+        //print(dialogueText.GetComponent<Text>().color.a);
         if(Input.GetKeyDown(KeyCode.Return))
         {
             Transition();
         }
         if (panelFadeOut)
         {
-            if (dialoguePanel.GetComponent<Image>().color.a >= 0)
+            if (dialoguePanel.GetComponent<Image>().color.a > 0)
             {
                 dialoguePanel.GetComponent<Image>().color -= new Color(0, 0, 0, 0.03f);
             }
             if (dialoguePanel.GetComponent<Image>().color.a <= 0)
             {
                 //dialogueText.gameObject.SetActive(false);
-                textFadeOut = false;
+                panelFadeOut = false;
             }
         }
         else
@@ -45,11 +48,15 @@ public class Dialogue : MonoBehaviour
             if (dialoguePanel.GetComponent<Image>().color.a <= 1 && panelFadeIn)
             {
                 dialoguePanel.GetComponent<Image>().color += new Color(0, 0, 0, 0.03f);
+                if(dialoguePanel.GetComponent<Image>().color.a >= 1)
+                {
+                    panelFadeIn = false;
+                }
             }
         }
         if (textFadeOut)
         {
-            if (dialogueText.GetComponent<Text>().color.a >= 0)
+            if (dialogueText.GetComponent<Text>().color.a > 0)
             {
                 dialogueText.GetComponent<Text>().color -= new Color(0, 0, 0, 0.03f);
             }
@@ -57,6 +64,7 @@ public class Dialogue : MonoBehaviour
             {
                 //dialogueText.gameObject.SetActive(false);
                 textFadeOut = false;
+                print("a is 0");
             }
         }
         if (transition)
@@ -72,10 +80,18 @@ public class Dialogue : MonoBehaviour
         }
         else
         {          
-            if (dialogueText.GetComponent<Text>().color.a <= 1 && textFadeIn)
+            if (dialogueText.GetComponent<Text>().color.a <= 1 && textFadeIn && !textFadeOut)
             {
                 dialogueText.GetComponent<Text>().color += new Color(0, 0, 0, 0.03f);
             }
+        }
+        if(dialoguePanel.GetComponent<Image>().color.a < 0)
+        {
+            dialoguePanel.GetComponent<Image>().color = new Color(0, 0, 0, 0);
+        }
+        if (dialogueText.GetComponent<Text>().color.a < 0)
+        {
+            dialogueText.GetComponent<Text>().color = new Color(1, 1, 1, 0);
         }
     }
 
@@ -90,10 +106,45 @@ public class Dialogue : MonoBehaviour
         yield return new WaitForSeconds(2);
         dialogueText.text = "I should look around.";
         Invoke("TextFadeOut", 1.5f);
-        Invoke("PanelFadeOut", 2.5f);
+        Invoke("PanelFadeOut", 2f);
         yield return new WaitForSeconds(3.5f);
         tutorial.IntroTutorial();
         //Invoke("Transition", 1.5f);
+    }
+
+    public void PlayDialogue(int i)
+    {
+        switch(i)
+        {
+            case 1:
+                panelFadeIn = true;
+                Invoke("TextFadeIn", 1);
+                dialogueText.text = "Which way should I go?";
+                Invoke("TextFadeOut", 2f);
+                Invoke("PanelFadeOut", 2.5f);
+                break;
+            case 2:
+                panelFadeIn = true;
+                Invoke("TextFadeIn", 1);
+                dialogueText.text = "This place is beautiful.";
+                Invoke("TextFadeOut", 2f);
+                Invoke("PanelFadeOut", 2.5f);
+                break;
+            case 3:
+                panelFadeIn = true;
+                Invoke("TextFadeIn", 1);
+                dialogueText.text = "I'm gonna need some kind of tool. Maybe If I could find a sharp rock, I could use that.";
+                Invoke("TextFadeOut", 4f);
+                Invoke("PanelFadeOut", 4.5f);
+                break;
+            case 4:
+                panelFadeIn = true;
+                Invoke("TextFadeIn", 1);
+                dialogueText.text = "Well, I guess this is a good place to build a raft.";
+                Invoke("TextFadeOut", 3f);
+                Invoke("PanelFadeOut", 3.5f);
+                break;
+        }
     }
     
     void Transition()
@@ -105,7 +156,6 @@ public class Dialogue : MonoBehaviour
 
     void PanelFadeOut()
     {
-        panelFadeIn = false;
         panelFadeOut = true;
     }
 

@@ -85,17 +85,17 @@ public class Tutorial : MonoBehaviour
 
     IEnumerator IntroDialogue()
     {
+        PlayerMove.paused = true;
         yield return new WaitForSeconds(1);
         tutorialText.text = "Use the Mouse to look around.";
         Invoke("Transition", 1.5f);
         yield return new WaitForSeconds(2);
         tutorialText.text = "Use W, A, S and D keys to move";
-        Invoke("Transition", 1.5f);
-        yield return new WaitForSeconds(2);
-        tutorialText.text = "Use Space to Jump";
         Invoke("TextFadeOut", 1.5f);
         Invoke("PanelFadeOut", 2.5f);
         //Invoke("Transition", 1.5f);
+        yield return new WaitForSeconds(2.5f);
+        PlayerMove.paused = false;
     }
 
     void Transition()

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
+    public static bool paused;
     [SerializeField] private string horizontalInputName;
     [SerializeField] private string verticalInputName;
     [SerializeField] private float movementSpeed;
@@ -24,7 +25,10 @@ public class PlayerMove : MonoBehaviour
 
     private void Update()
     {
-        PlayerMovement();
+        if (!paused)
+        {
+            PlayerMovement();
+        }
     }
 
     private void PlayerMovement()
@@ -66,5 +70,4 @@ public class PlayerMove : MonoBehaviour
         charController.slopeLimit = 45.0f;
         isJumping = false;
     }
-
 }

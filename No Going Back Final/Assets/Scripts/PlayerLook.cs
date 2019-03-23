@@ -25,7 +25,10 @@ public class PlayerLook : MonoBehaviour
 
     private void Update()
     {
-        CameraRotation();
+        if (!PlayerMove.paused)
+        {
+            CameraRotation();
+        }
     }
 
     private void CameraRotation()

@@ -559,7 +559,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.156, y: 0.4306066}
   m_AnchorMax: {x: 0.47900003, y: 0.59800005}
-  m_AnchoredPosition: {x: 0.1000061, y: 0.08000183}
+  m_AnchoredPosition: {x: 0.099975586, y: 0.08000183}
   m_SizeDelta: {x: 0.7599945, y: 0.09000015}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &472250828
@@ -878,12 +878,12 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1969073062}
-        m_MethodName: 
+      - m_Target: {fileID: 1969073064}
+        m_MethodName: Stage1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1275,7 +1275,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.814, y: 0.818}
   m_AnchorMax: {x: 0.9556906, y: 0.933}
-  m_AnchoredPosition: {x: 1.0899963, y: 0.6999817}
+  m_AnchoredPosition: {x: 1.0899658, y: 0.6999817}
   m_SizeDelta: {x: 0.8200073, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1232866717
@@ -1927,7 +1927,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: Nahla Hudhaidh
 --- !u!222 &1605901651
 CanvasRenderer:
   m_ObjectHideFlags: 0

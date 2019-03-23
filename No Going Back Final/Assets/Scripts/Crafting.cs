@@ -26,7 +26,6 @@ public class Crafting : MonoBehaviour
 
     void Start ()
     {
-        print(logs);
     }
 	
 	void Update ()

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -65,6 +66,11 @@ public class MainMenuManager : MonoBehaviour
     {
         Transition();
         Invoke("MainMenu", 0.5f);
+    }
+
+    public void Stage1()
+    {
+        SceneManager.LoadScene(1);
     }
 
     void MainMenu()
