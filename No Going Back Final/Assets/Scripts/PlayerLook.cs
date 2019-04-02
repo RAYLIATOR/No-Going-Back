@@ -21,6 +21,7 @@ public class PlayerLook : MonoBehaviour
     private void LockCursor()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void Update()
@@ -44,11 +45,11 @@ public class PlayerLook : MonoBehaviour
             mouseY = 0.0f;
             ClampXAxisRotationToValue(270.0f);
         }
-        else if (xAxisClamp < -90.0f)
+        else if (xAxisClamp < -45.0f)
         {
-            xAxisClamp = -90.0f;
+            xAxisClamp = -45.0f;
             mouseY = 0.0f;
-            ClampXAxisRotationToValue(90.0f);
+            ClampXAxisRotationToValue(45.0f);
         }
 
         transform.Rotate(Vector3.left * mouseY);

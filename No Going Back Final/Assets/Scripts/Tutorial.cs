@@ -41,7 +41,7 @@ public class Tutorial : MonoBehaviour
             if (tutorialPanel.GetComponent<Image>().color.a <= 0)
             {
                 //dialogueText.gameObject.SetActive(false);
-                textFadeOut = false;
+                panelFadeOut = false;
             }
         }
         else
@@ -49,6 +49,10 @@ public class Tutorial : MonoBehaviour
             if (tutorialPanel.GetComponent<Image>().color.a <= 1 && panelFadeIn)
             {
                 tutorialPanel.GetComponent<Image>().color += new Color(0, 0, 0, 0.03f);
+                if (tutorialPanel.GetComponent<Image>().color.a >= 1)
+                {
+                    panelFadeIn = false;
+                }
             }
         }
         if (textFadeOut)
@@ -81,20 +85,57 @@ public class Tutorial : MonoBehaviour
                 tutorialText.GetComponent<Text>().color += new Color(0, 0, 0, 0.03f);
             }
         }
+        if (tutorialPanel.GetComponent<Image>().color.a < 0)
+        {
+            tutorialPanel.GetComponent<Image>().color = new Color(0, 0, 0, 0);
+        }
+        if (tutorialText.GetComponent<Text>().color.a < 0)
+        {
+            tutorialText.GetComponent<Text>().color = new Color(1, 1, 1, 0);
+        }
     }
 
     IEnumerator IntroDialogue()
     {
-        PlayerMove.paused = true;
         yield return new WaitForSeconds(1);
         tutorialText.text = "Use the Mouse to look around.";
         Invoke("Transition", 1.5f);
         yield return new WaitForSeconds(2);
         tutorialText.text = "Use W, A, S and D keys to move";
+        Invoke("Transition", 1.5f);
+        yield return new WaitForSeconds(2);
+        tutorialText.text = "Press Escape to pause the game.";
         Invoke("TextFadeOut", 1.5f);
         Invoke("PanelFadeOut", 2.5f);
         //Invoke("Transition", 1.5f);
         yield return new WaitForSeconds(2.5f);
+        PlayerMove.paused = false;
+    }
+
+    public void ToolInstruction()
+    {
+        PlayerMove.paused = true;
+        panelFadeIn = true;
+        Invoke("TextFadeIn", 1);
+        tutorialText.text = "Press E to pickup tool.";
+        Invoke("TextFadeOut", 2f);
+        Invoke("PanelFadeOut", 2.5f);
+        Invoke("UnPause", 2.5f);
+    }
+
+    public void MarkerInstruction()
+    {
+        PlayerMove.paused = true;
+        panelFadeIn = true;
+        Invoke("TextFadeIn", 1);
+        tutorialText.text = "Press E to mark location.";
+        Invoke("TextFadeOut", 2f);
+        Invoke("PanelFadeOut", 2.5f); ;
+        Invoke("UnPause", 2.5f);
+    }
+
+    void UnPause()
+    {
         PlayerMove.paused = false;
     }
 

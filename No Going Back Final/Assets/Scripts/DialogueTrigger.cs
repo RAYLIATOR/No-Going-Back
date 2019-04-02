@@ -10,10 +10,11 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            other.gameObject.GetComponent<Dialogue>().PlayDialogue(i);
+            other.gameObject.GetComponent<Dialogue>().PlayPlayerDialogue(i);
             Destroy(gameObject);
         }
     }
+
     void Start ()
     {
 		

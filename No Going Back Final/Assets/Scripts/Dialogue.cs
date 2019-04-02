@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Dialogue : MonoBehaviour
 {
@@ -13,21 +14,57 @@ public class Dialogue : MonoBehaviour
     bool textFadeIn;
     bool panelFadeIn;
     bool panelFadeOut;
+    public GameObject fadePanel;
+    bool fadeToBlack;
+    bool fadeIn;
 
     void Start()
     {
+        PlayerMove.paused = true;
         tutorial = FindObjectOfType<Tutorial>();
-        StartCoroutine("IntroDialogue");
-        PanelFadeIn();
-        Invoke("TextFadeIn", 1);
+        if(FindObjectOfType<Canvas>().gameObject.tag == "Stage 1")
+        {
+            StartCoroutine("IntroDialogue");
+            PanelFadeIn();
+            Invoke("TextFadeIn", 1);
+        }
+        else if (FindObjectOfType<Canvas>().gameObject.tag == "Stage 2")
+        {
+            fadeIn = true;
+            StartCoroutine("Stage2Intro");
+            Invoke("PanelFadeIn", 1);
+            Invoke("TextFadeIn", 2);
+        }
+        else if (FindObjectOfType<Canvas>().gameObject.tag == "Stage 3")
+        {
+            StartCoroutine("Stage3Intro");
+            PanelFadeIn();
+            Invoke("TextFadeIn", 1);
+        }
     }
-
+    
     void Update()
     {
+        if (fadePanel.GetComponent<Image>().color.a < 1 && fadeToBlack)
+        {
+            fadePanel.GetComponent<Image>().color += new Color(0, 0, 0, 0.01f);
+        }
+        if(fadePanel.GetComponent<Image>().color.a >= 1 && FindObjectOfType<Canvas>().gameObject.tag == "Stage 1")
+        {
+            SceneManager.LoadScene(2);
+        }
+        if (fadePanel.GetComponent<Image>().color.a > 0 && fadeIn)
+        {
+            fadePanel.GetComponent<Image>().color -= new Color(0, 0, 0, 0.01f);
+        }
+        if(fadePanel.GetComponent<Image>().color.a <= 0)
+        {
+            fadeIn = false;
+        }
         //Mathf.Clamp(dialoguePanel.GetComponent<Image>().color.a, 0, 1);
         //print(textFadeOut);
         //print(dialogueText.GetComponent<Text>().color.a);
-        if(Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Return))
         {
             Transition();
         }
@@ -64,7 +101,6 @@ public class Dialogue : MonoBehaviour
             {
                 //dialogueText.gameObject.SetActive(false);
                 textFadeOut = false;
-                print("a is 0");
             }
         }
         if (transition)
@@ -98,13 +134,13 @@ public class Dialogue : MonoBehaviour
     IEnumerator IntroDialogue()
     {
         yield return new WaitForSeconds(1);
-        dialogueText.text = "Where am I?";
+        dialogueText.text = "Where am I? I can't remember anything.";
         Invoke("Transition", 1.5f);
         yield return new WaitForSeconds(2);
-        dialogueText.text = "What is this place?";
+        dialogueText.text = "Head hurts...Wait...There's the ship!";
         Invoke("Transition", 1.5f);
         yield return new WaitForSeconds(2);
-        dialogueText.text = "I should look around.";
+        dialogueText.text = "I need to get to the other side of this island.";
         Invoke("TextFadeOut", 1.5f);
         Invoke("PanelFadeOut", 2f);
         yield return new WaitForSeconds(3.5f);
@@ -112,7 +148,32 @@ public class Dialogue : MonoBehaviour
         //Invoke("Transition", 1.5f);
     }
 
-    public void PlayDialogue(int i)
+    IEnumerator Stage2Intro()
+    {
+        yield return new WaitForSeconds(1);
+        dialogueText.text = "Where am I? My head hurts.";
+        Invoke("Transition", 2.5f);
+        yield return new WaitForSeconds(3);
+        dialogueText.text = "There's the ship! Wait a second...";
+        Invoke("Transition", 1.5f);
+        yield return new WaitForSeconds(2);
+        dialogueText.text = "It feels like.. I've been here before.";
+        Invoke("Transition", 1.5f);
+        yield return new WaitForSeconds(2);
+        dialogueText.text = "I need to get to the other side of this island.";
+        Invoke("TextFadeOut", 1.5f);
+        Invoke("PanelFadeOut", 2f);
+        Invoke("UnPause", 2);
+        //yield return new WaitForSeconds(3.5f);
+        //Invoke("Transition", 1.5f);
+    }
+
+    void UnPause()
+    {
+        PlayerMove.paused = false;
+    }
+
+    public void PlayPlayerDialogue(int i)
     {
         switch(i)
         {
@@ -131,22 +192,159 @@ public class Dialogue : MonoBehaviour
                 Invoke("PanelFadeOut", 2.5f);
                 break;
             case 3:
+                PlayerMove.paused = true;
                 panelFadeIn = true;
                 Invoke("TextFadeIn", 1);
-                dialogueText.text = "I'm gonna need some kind of tool. Maybe If I could find a sharp rock, I could use that.";
+                dialogueText.text = "The ship's too far away, I'm gonna have to build a raft.";
+                Invoke("TextFadeOut", 3f);
+                Invoke("PanelFadeOut", 3.5f);
+                Invoke("UnPause", 4f);
+                break;
+            case 4:
+                PlayerMove.paused = true;
+                panelFadeIn = true;
+                Invoke("TextFadeIn", 1);
+                dialogueText.text = "This looks like a good spot for the raft. Let's mark it.";
                 Invoke("TextFadeOut", 4f);
                 Invoke("PanelFadeOut", 4.5f);
+                Invoke("MarkerInstruction", 4.5f);
+                Invoke("UnPause", 4f);
+                break;
+            case 5:
+                panelFadeIn = true;
+                Invoke("TextFadeIn", 1);
+                dialogueText.text = "I think I'm getting closer to the ship.";
+                Invoke("TextFadeOut", 4f);
+                Invoke("PanelFadeOut", 4.5f);
+                break;
+            case 6:
+                panelFadeIn = true;
+                Invoke("TextFadeIn", 1);
+                dialogueText.text = "Wha...Whats happening? No!";
+                Invoke("TextFadeOut", 4f);
+                Invoke("PanelFadeOut", 4.5f);
+                break;
+            case 13:
+                PlayerMove.paused = true;
+                panelFadeIn = true;
+                Invoke("TextFadeIn", 1);
+                dialogueText.text = "I could use this rock as a tool. I should pick it up.";
+                Invoke("TextFadeOut", 4f);
+                Invoke("PanelFadeOut", 4.5f);
+                Invoke("ToolInstruction", 4.5f);
+                Invoke("UnPause", 4f);
+                break;
+            case 7:
+                panelFadeIn = true;
+                Invoke("TextFadeIn", 1);
+                dialogueText.text = "Why does this island seem familiar?";
+                Invoke("TextFadeOut", 2f);
+                Invoke("PanelFadeOut", 2.5f);
+                break;
+            case 8:
+                panelFadeIn = true;
+                Invoke("TextFadeIn", 1);
+                dialogueText.text = "I need to get to that ship";
+                Invoke("TextFadeOut", 2f);
+                Invoke("PanelFadeOut", 2.5f);
+                break;
+            case 9:
+                panelFadeIn = true;
+                Invoke("TextFadeIn", 1);
+                dialogueText.text = "The ship's too far away, I'm gonna have to build a raft.";
+                Invoke("TextFadeOut", 3f);
+                Invoke("PanelFadeOut", 3.5f);
+                break;
+            case 10:
+                panelFadeIn = true;
+                Invoke("TextFadeIn", 1);
+                dialogueText.text = "This looks like a good spot for the raft. Let's mark it.";
+                Invoke("TextFadeOut", 4f);
+                Invoke("PanelFadeOut", 4.5f);
+                break;
+            case 11:
+                panelFadeIn = true;
+                Invoke("TextFadeIn", 1);
+                dialogueText.text = "I think I'm getting closer... to the ship.";
+                Invoke("TextFadeOut", 4f);
+                Invoke("PanelFadeOut", 4.5f);
+                break;
+            case 12:
+                panelFadeIn = true;
+                Invoke("TextFadeIn", 1);
+                dialogueText.text = "Wha...Whats going on? No! No!";
+                Invoke("TextFadeOut", 4f);
+                Invoke("PanelFadeOut", 4.5f);
+                break;
+
+        }
+    }
+
+    public void PlayMemoryDialogue(int i, Memory memory)
+    {
+        switch (i)
+        {
+            case 1:
+                panelFadeIn = true;
+                Invoke("TextFadeIn", 1);
+                dialogueText.text = "This is where you belong!";
+                Invoke("TextFadeOut", 2f);
+                Invoke("PanelFadeOut", 2.5f);
+                memory.AttackCommand(2.5f);
+                break;
+            case 2:
+                panelFadeIn = true;
+                Invoke("TextFadeIn", 1);
+                dialogueText.text = "You deserve this!";
+                Invoke("TextFadeOut", 2f);
+                Invoke("PanelFadeOut", 2.5f);
+                memory.AttackCommand(2.5f);
+                break;
+            case 3:
+                panelFadeIn = true;
+                Invoke("TextFadeIn", 1);
+                dialogueText.text = "You are never leaving this place!";
+                Invoke("TextFadeOut", 2f);
+                Invoke("PanelFadeOut", 2.5f);
+                memory.AttackCommand(2.5f);
                 break;
             case 4:
                 panelFadeIn = true;
                 Invoke("TextFadeIn", 1);
-                dialogueText.text = "Well, I guess this is a good place to build a raft.";
-                Invoke("TextFadeOut", 3f);
-                Invoke("PanelFadeOut", 3.5f);
+                dialogueText.text = "You did this to yourself!";
+                Invoke("TextFadeOut", 2f);
+                Invoke("PanelFadeOut", 2.5f);
+                memory.AttackCommand(2.5f);
+                break;
+            case 5:
+                panelFadeIn = true;
+                Invoke("TextFadeIn", 1);
+                dialogueText.text = "You can't run from this!";
+                Invoke("TextFadeOut", 2f);
+                Invoke("PanelFadeOut", 2.5f);
+                memory.AttackCommand(2.5f);
+                break;
+            case 6:
+                panelFadeIn = true;
+                Invoke("TextFadeIn", 1);
+                dialogueText.text = "Why do you deny reality?";
+                Invoke("TextFadeOut", 2f);
+                Invoke("PanelFadeOut", 2.5f);
+                memory.AttackCommand(2.5f);
                 break;
         }
     }
     
+    void ToolInstruction()
+    {
+        tutorial.ToolInstruction();
+    }
+
+    void MarkerInstruction()
+    {
+        tutorial.MarkerInstruction();
+    }
+
     void Transition()
     {
         //dialogueText.SetActive(true);
@@ -173,5 +371,10 @@ public class Dialogue : MonoBehaviour
     void TextFadeIn()
     {
         textFadeIn = true;
+    }
+
+    public void FadeToBlack()
+    {
+        fadeToBlack = true;
     }
 }

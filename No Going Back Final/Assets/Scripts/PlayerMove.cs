@@ -25,6 +25,14 @@ public class PlayerMove : MonoBehaviour
 
     private void Update()
     {
+        if(Input.GetKey(KeyCode.LeftShift))
+        {
+            movementSpeed = 35;
+        }
+        else
+        {
+            movementSpeed = 12;
+        }
         if (!paused)
         {
             PlayerMovement();
