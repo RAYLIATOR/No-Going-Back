@@ -13,6 +13,7 @@ public class Memory : MonoBehaviour
         if(collision.gameObject.tag == "Player")
         {
             print("Hit");
+            collision.gameObject.GetComponent<PlayerFlash>().Flash();
             Destroy(gameObject);
         }
     }

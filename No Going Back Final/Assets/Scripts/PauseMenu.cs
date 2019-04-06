@@ -17,18 +17,18 @@ public class PauseMenu : MonoBehaviour
 		if(Input.GetKeyDown(KeyCode.Escape))
         {
             paused = !paused;
-        }
-        if(paused)
-        {
-            Time.timeScale = 0;
-            pauseMenu.SetActive(true);
-            PlayerMove.paused = true;
-        }
-        else
-        {
-            Time.timeScale = 1;
-            pauseMenu.SetActive(false);
-            PlayerMove.paused = false; ;
+            if (paused)
+            {
+                Time.timeScale = 0;
+                pauseMenu.SetActive(true);
+                PlayerMove.paused = true;
+            }
+            else
+            {
+                Time.timeScale = 1;
+                pauseMenu.SetActive(false);
+                PlayerMove.paused = false;
+            }
         }
 	}
 }

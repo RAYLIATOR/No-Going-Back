@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Tutorial : MonoBehaviour
 {
+
     //Dialogue
     public GameObject tutorialPanel;
     public Text tutorialText;
@@ -112,9 +113,18 @@ public class Tutorial : MonoBehaviour
         PlayerMove.paused = false;
     }
 
+    public void LogInstruction()
+    {
+        panelFadeIn = true;
+        Invoke("TextFadeIn", 1);
+        tutorialText.text = "Press E to place log on marked spot.";
+        Invoke("TextFadeOut", 2f);
+        Invoke("PanelFadeOut", 2.5f);
+        Invoke("UnPause", 2.5f);
+    }
+
     public void ToolInstruction()
     {
-        PlayerMove.paused = true;
         panelFadeIn = true;
         Invoke("TextFadeIn", 1);
         tutorialText.text = "Press E to pickup tool.";
@@ -125,12 +135,21 @@ public class Tutorial : MonoBehaviour
 
     public void MarkerInstruction()
     {
-        PlayerMove.paused = true;
         panelFadeIn = true;
         Invoke("TextFadeIn", 1);
         tutorialText.text = "Press E to mark location.";
         Invoke("TextFadeOut", 2f);
-        Invoke("PanelFadeOut", 2.5f); ;
+        Invoke("PanelFadeOut", 2.5f);
+        Invoke("UnPause", 2.5f);
+    }
+
+    public void TreeInstruction()
+    {
+        panelFadeIn = true;
+        Invoke("TextFadeIn", 1);
+        tutorialText.text = "Press E to chop down tree.";
+        Invoke("TextFadeOut", 2f);
+        Invoke("PanelFadeOut", 2.5f);
         Invoke("UnPause", 2.5f);
     }
 

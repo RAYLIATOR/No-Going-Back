@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 64622165073823286}
   m_Layer: 0
   m_Name: Cylinder
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -69,7 +69,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1720182344315926}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 96.661804, y: 12.018255, z: -11.588753}
+  m_LocalPosition: {x: -256.70224, y: 7.585134, z: -100.28215}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4582778827454450}

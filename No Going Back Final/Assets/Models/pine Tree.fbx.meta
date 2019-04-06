@@ -37,6 +37,12 @@ ModelImporter:
     4300006: Cone.002
     4300008: Cone.001
     4300010: Cone
+    6400000: Cone
+    6400002: Cone.001
+    6400004: Cone.002
+    6400006: Cone.003
+    6400008: Cone.004
+    6400010: Cylinder
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -70,7 +76,7 @@ ModelImporter:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    addColliders: 0
+    addColliders: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1

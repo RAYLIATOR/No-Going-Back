@@ -9,6 +9,7 @@ TagManager:
   - Zone
   - Stage 1
   - Stage 2
+  - Stage 3
   layers:
   - Default
   - TransparentFX

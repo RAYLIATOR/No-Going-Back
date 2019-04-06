@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class Crafting : MonoBehaviour
 {
+    public GameObject rightHand;
+    GameObject tool;
     Animator anim;
     public bool inZone;
     bool hasTool;
     int logs;
     bool marked;
     public GameObject xMark;
-    public GameObject tool;
     public GameObject log;
     Vector3 xMarkPosition;
     //logs
@@ -24,25 +25,76 @@ public class Crafting : MonoBehaviour
     {
         if(other.tag == "Tool" && Input.GetKeyDown(KeyCode.E))
         {
-            //PlayerMove.paused = true;
-            //anim.SetTrigger("Pick");
-            Destroy(other.gameObject);
-            //Invoke("UnPause", 7.5f);
+            PlayerMove.paused = true;
+            tool = other.gameObject;
+            ResetCamera();
+            transform.localEulerAngles = new Vector3(0, 113.9f, 0);
+            transform.localPosition = new Vector3(335f, 8.9f, -33.37f);
+            anim.SetTrigger("Pick");
+            Invoke("ToolInHand", 2.14f);
             hasTool = true;
+            Invoke("UnPause", 9.567f);
+            if (marked)
+            {
+                Invoke("TreeDialogue", 9.567f);
+            }
+            else
+            {
+                Invoke("MarkDialogue", 9.567f);
+            }
         }
         if (other.tag == "Tree" && Input.GetKeyDown(KeyCode.E) && hasTool && marked && logs == 0)
         {
-            //PlayerMove.paused = true;
-            //anim.SetTrigger("Chop");
-            Destroy(other.gameObject);
-            currentLog = Instantiate(log, transform.position, Quaternion.identity);
-            currentLog.transform.parent = transform;
-            currentLog.transform.localPosition = logCarryPosition;
-            currentLog.transform.localEulerAngles = new Vector3(3.26f, -20.2f, 180);
-            //Invoke("UnPause", 2.4f);
-            logs += 1;
-            print(logs);
+            other.tag = "Untagged";
+            PlayerMove.paused = true;
+            anim.SetTrigger("Chop");
+            Destroy(other.gameObject,2.4f);
+            Invoke("CarryLog", 2.4f);
+            Invoke("UnPause", 2.4f);
         }
+    }
+
+    void TreeDialogue()
+    {
+        FindObjectOfType<Dialogue>().PlayPlayerDialogue(14);
+    }
+
+    void MarkDialogue()
+    {
+        FindObjectOfType<Dialogue>().PlayPlayerDialogue(15);
+    }
+
+    void CarryLog()
+    {
+        currentLog = Instantiate(log, transform.position, Quaternion.identity);
+        currentLog.transform.parent = transform;
+        currentLog.transform.localPosition = logCarryPosition;
+        currentLog.transform.localEulerAngles = new Vector3(3.26f, -20.2f, 180);
+        //Invoke("UnPause", 2.4f);
+        logs += 1;
+        if(logsPlaced == 0)
+        {
+            FindObjectOfType<Dialogue>().PlayPlayerDialogue(17);
+        }
+        print(logs);
+    }
+
+    void ToolInHand()
+    {
+        Destroy(tool.GetComponent<Rigidbody>());
+        tool.transform.parent = rightHand.transform;
+        tool.transform.localPosition = new Vector3(0.09f, -0.4f, -0.6f);
+        tool.transform.localEulerAngles = new Vector3(15.506f, -138.59f, 75.481f);
+    }
+
+    void ResetCamera()
+    {
+        Camera.main.transform.localEulerAngles = Vector3.zero;
+    }
+
+    void ChopCamera()
+    {
+        Camera.main.transform.localEulerAngles = new Vector3(0,0,0);
     }
 
     void UnPause()
@@ -60,17 +112,32 @@ public class Crafting : MonoBehaviour
     }
 	
 	void Update ()
-    {
+	{
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            ResetCamera();
+            PlayerMove.paused = true;
+            anim.SetTrigger("Pick");
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            anim.SetTrigger("Chop");
+        }
         if (inZone && Input.GetKeyDown(KeyCode.E) && !marked)
         {
             GameObject g = Instantiate(xMark, xMarkPosition, Quaternion.identity);
             g.transform.Rotate(90,-17.1f,0);
+            if(tool == true)
+            {
+                TreeDialogue();
+            }
             marked = true;
         }
         if (inZone && Input.GetKeyDown(KeyCode.E) && logs > 0 && marked)
         {
             Destroy(currentLog);
-            Instantiate(log, logPositions[logsPlaced], Quaternion.identity);
+            GameObject l = Instantiate(log, logPositions[logsPlaced], Quaternion.identity);
+            l.transform.localEulerAngles = new Vector3(5.203f, 0.052f, 0.348f);
             logs -= 1;
             logsPlaced += 1;
             if(logsPlaced == 7)
